@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pink AI | Classify</title>
+	<link rel="stylesheet" type="text/css" href="general.css">
+	<style type="text/css">
+		.image-container{
+			width: 50%;
+			margin: auto;
+		}
+		.thumbnails>li{
+			width: 23%;
+		}
+		.thumbnail>img{
+			width:100%;
+		}
+		.thumbnails{
+			height:50vh;
+			overflow-y: scroll;
+		}
+		.class-toggle{
+			display:inline-block;
+			margin-left: 20px;
+			margin-right: 0px;
+			font-family: "Gotham Medium";
+			padding: 15px;
+			cursor: pointer;
+			font-size: 15px;
+		}
+		.class-toggle.active{
+			color:black;
+			border-radius: 20px;
+			background-color: white;
+		}
+
+		.preview-image-container{
+			width: 100%;
+			text-align: center;
+		}
+		#upload-toggle{
+			float:right;
+		}
+		.binaryContainer {
+			display: none;
+		}
+		.loadingCont {
+			width: 100%;
+			display: block;
+			vertical-align: text-top;
+			transition: 250ms width; 
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="loading-anim.css">
+	<link rel="stylesheet" type="text/css" href="image-picker/image-picker.css">
+</head>
+<body>
+	<h2 style="margin-top:0;"><span>PinkAI</span></h2>
+	<h2>Accurate, Affordable, Efficient Biopsy Analysis for Breast Cancer Detection</h2>
+	<div class="binaryContainer">
+		<h2 style="font-size: 20px;">Classifications determined!</h2>
+		<div class="imgContainer" style="width: 100%;margin:auto;">
+			<img src="" id="classified-img" alt="" style="width:50%">
+			<p class="class" id="classification-1"></p>
+			<p class="confidence" id="confidence-1"><span></span> CONFIDENCE</p>
+		</div>
+	</div>
+	<div class="loadingCont">
+		<h2 id="loading" style="font-size: 20px;">Diagnose from our pre-selected images below:</h2>
+		<div style="width: 100%; text-align: center;"><div class="lds-dual-ring" id="loading-anim"></div></div>
+	</div>
+	<div class="image-container">
+		<div class="classes-container">
+			<p style="display: inline-block; font-family: 'Gotham Medium';">Filter Class: </p>
+			<p class="class-toggle active" id="benign-toggle">BENIGN</p>
+			<p class="class-toggle" id="malignant-toggle">MALIGNANT</p>
+			<p class="class-toggle" id="upload-toggle">UPLOAD</p>
+			<form id="upload-form"><input type="file" name="img" style="display:none;" id="file_input"></form>
+		</div>
+		<select class="image-picker">
+			<% images.forEach(function(img) { %>
+				<option  data-img-src=<%=img.url%> data-img-class=<%=img.class%> value=<%=img.url%>></option>
+			<% }); %>		
+		</select>
+		<div style="position: fixed; bottom: 20px;left:0;width: 100%;">
+			<p id="submitBtn" style='margin:auto; background-color: white; color: black; width: 150px; text-align: center; border-radius: 15px; padding: 20px;font-family:"Gotham Medium";font-size: 22px; cursor: pointer; margin-bottom: 35px;'>ANALYZE</p>
+			<p style="text-align: center;font-size: 18px;cursor: pointer;"><a href="https://drive.google.com/drive/folders/1PHioYkrpGZY9_nJycnA3TXPXYym56EG0">OR choose any image from our dataset for diagnosis!</a></p>
+		</div>
+	</div>
+	<div class="preview-image-container" style="display:none;">
+		<img src="http://placehold.it/700x460" id="preview_img" />
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="image-picker/image-picker.min.js"></script>
+	<script type="text/javascript">
+		$("#loading-anim").hide();
+		$("select").imagepicker();
+		$(".malignant").hide();
+
+		$("#malignant-toggle").click(function(e){
+			$("#loading").text("Diagnose from our pre-selected images below:");
+			$(".preview-image-container").fadeOut(function(){
+				$(".image_picker_selector").fadeIn();
+			});
+			$(this).addClass("active");
+			$("#benign-toggle").removeClass("active");
+			$("#upload-toggle").removeClass("active");			
+			$(".benign").fadeOut(300, function(){
+				$(".malignant").fadeIn(300);
+			});
+		});
+
+		$("#benign-toggle").click(function(e){
+			$("#loading").text("Diagnose from our pre-selected images below:");
+			$(".preview-image-container").fadeOut(function(){
+				$(".image_picker_selector").fadeIn();
+			});
+			$(this).addClass("active");
+			$("#malignant-toggle").removeClass("active");
+			$("#upload-toggle").removeClass("active");
+			$(".malignant").fadeOut(300, function(){
+				$(".benign").fadeIn(300);
+			});
+		});
+
+		$("#upload-toggle").click(function(e){
+			$(".image_picker_selector").fadeOut(function(){
+				$(".preview-image-container").fadeIn();
+			});
+			$("#loading").text("Uploaded image shown below:");
+			$(this).addClass("active");
+			$("#malignant-toggle").removeClass("active");
+			$("#benign-toggle").removeClass("active");
+			document.getElementById("file_input").click();
+		});
+
+		$("#file_input").change(function() {
+			if (this.files && this.files[0]) {
+			   var reader = new FileReader();
+			   
+				reader.onload = function(e) {
+					$('#preview_img').attr('src', e.target.result);
+				}
+			   
+			   reader.readAsDataURL(this.files[0]);
+			 }
+		});
+	</script>
+
+	<script type="text/javascript">
+		function redirect(encoded){
+			window.location.href = "/results/" + encoded;
+		}
+
+		function classifiedAnims(id, conf, img_path) {
+			$("#classified-img").attr("src", img_path);
+			$("#classification-1").html(id);
+			$("#confidence-1>span").html(conf);
+			$(".binaryContainer").fadeIn();
+			$(".loadingCont").css({
+				"width": "40%",
+				"display": "inline-block"
+			});
+		}
+
+		$("#submitBtn").click(function(e) {
+			$(".image-container").fadeOut(function(){
+				$("#loading").text("Analyzing with computer vision...");
+				setTimeout(function(){	
+					$("#loading").text("Processing with machine learning...");
+				}, 1500)
+				$("#loading-anim").fadeIn();
+			});
+
+			$(".preview-image-container").fadeOut();
+			var totalData = {};
+			var classifyDone = false;
+			var classifyCall = null;
+			var analyzeCall = null;
+			if ($(".class-toggle.active").attr("id") == "upload-toggle"){
+				var form = document.getElementById("upload-form");
+				var formData = new FormData(form);
+				classifyCall = $.ajax({
+					contentType: false,
+					data: formData,
+					dataType: 'json',
+					processData: false,
+					success: function(data){
+						classifyDone = true;
+						if (data.classification == "BENIGN") {
+							analyzeCall.abort();
+							redirect(window.btoa(JSON.stringify(data)));
+						} else {
+							totalData = data;
+							classifedAnims(data.classification, data.class_confidence, data.file_path);
+						}
+					},
+				    type: 'POST',
+				    url: '/classify'
+				});
+
+				analyzeCall = $.ajax({
+					contentType: false,
+					data: formData,
+					dataType: 'json',
+					processData: false,
+					success: function(data){
+						totalData = {...totalData, ...data};
+						if(classifyDone) {
+							redirect(window.btoa(JSON.stringify(totalData)));
+						}
+					},
+				    type: 'POST',
+				    url: '/analyze_malignant'
+				});
+				return;
+			}
+
+			var selected = $(".thumbnail.selected>img");
+			if(selected.css("display") == "none"){
+				alert("Choose a preset image!");
+				return;
+			}
+
+			var src = $(".thumbnail.selected>img").attr("src");
+			classifyCall = $.ajax({
+				contentType: 'application/json',
+				data: JSON.stringify({ "preset_path": "static/" + src }),
+				dataType: 'json',
+				success: function(data){
+					classifyDone = true;
+					data.file_path = src;
+					if (data.classification == "BENIGN") {
+						analyzeCall.abort();
+						redirect(window.btoa(JSON.stringify(data)));
+					} else {
+						totalData = data;
+						classifedAnims();
+					}
+				},
+			    type: 'POST',
+			    url: '/classify'
+			});
+			analyzeCall = $.ajax({
+				contentType: 'application/json',
+				data: JSON.stringify({ "preset_path": "static/" + src }),
+				dataType: 'json',
+				success: function(data){
+					totalData = {...totalData, ...data};
+					if(classifyDone) {
+						redirect(window.btoa(JSON.stringify(totalData)));
+					}
+				},
+			    type: 'POST',
+			    url: '/analyze_malignant'
+			});
+		});
+	</script>
+</body>
+</html>

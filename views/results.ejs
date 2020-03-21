@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pink AI | Results</title>
+	<style type="text/css">
+		.activeType {
+			background-color: white;
+			color: rgba(0, 0, 0, 0.8);
+			font-size: 28px !important;
+			border-radius: 10px;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="../../general.css">
+</head>
+<body>
+	<div id="resultContainer" style="text-align:center; width: 100%;">
+		<h2 style="margin-top:0;"><span>PinkAI</span></h2>
+		<h2>Accurate, Affordable, Efficient Biopsy Analysis for Breast Cancer Detection</h2>
+		<div class="binaryContainer">
+			<h2 style="font-size: 20px;">Classifications determined!</h2>
+			<div class="imgContainer" style="width: 100%;margin:auto;">
+				<img src=<%="../../" + file_path %> alt="" style="width:50%">
+				<p class="class" id="classification-1"><%=classification%></p>
+				<p class="confidence" id="confidence-1"><span><%=class_confidence%>%</span> CONFIDENCE</p>
+			</div>
+		</div>
+		<% if(type != null ) { %>
+		<div class="binaryContainer">
+			<h2 style="font-size: 20px;">Type determined!</h2>
+			<p><%=type%></p>
+			<p class="confidence"><span><%=type_confidence%>%</span> CONFIDENCE</p>
+		</div>
+		<% } %>
+	<div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+@font-face {
+	font-family: "Gotham Medium";
+	src: url(../../fonts/Gotham-Medium.otf);
+}
+body{
+	background-color: rgba(0, 0, 0, 0.8);
+	color:white;
+	margin-top:30px;
+}
+h1, h2{
+	width: 100%;
+	text-align: center;
+}
+span{
+	font-family: "Gotham Medium";
+	color: rgba(255, 164, 164, 1);
+	font-size:36px;
+}
+p, a, h2{
+	font-family: "Gotham Medium";
+	color: white;
+}
+a {
+	text-decoration: none;
+}
+.class{
+	font-size:35px;
+}
+.confidence{
+	font-size: 22px;
+
+}
+.confidence>span{
+	color: #ffa4a4;
+	font-size: 32px;
+}
+.imgContainer>img{
+	margin-bottom: 20px;
+}
+.imgContainer>p{
+	font-family: "Gotham Medium", sans-serif;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.binaryContainer{
+	width: 40%;
+	display:inline-block;
+	vertical-align: text-top;
+}
+.binaryContainer > p {
+	font-family: "Gotham Medium", sans-serif;
+	font-size: 20px;
+	padding: 20px;
+	margin: 0px 100px;
+}
