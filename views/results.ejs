@@ -17,20 +17,38 @@
 		<h2 style="margin-top:0;" class="headline">Pink AI</h2>
 		<h2 class="subheadline">Accurate, Affordable, Efficient Biopsy Analysis for Breast Cancer Detection</h2>
 		<div class="binaryContainer">
-			<h2 class="subheadline">Classifications determined!</h2>
-			<div class="imgContainer" style="width: 100%;margin:auto;">
-				<img src=<%="../../" + file_path %> alt="" style="width:30%">
+			<div class="imgContainer">
+				<h2 class="subheadline">Classifications determined!</h2>
+				<img src=<%="../../" + file_path %> alt="" style="width:60%">
 			</div>
-			<div class="prediction">
-				<p class="subheader">Predicted Tumor from Model</p>
-				<p class="class" id="classification-1"><%=classification%></p>
-				<p class="type" style="font-size:20px"><%=type%></p>
-				<p class="confidence" id="confidence-1"><span><%=confidence%>%</span> CONFIDENCE</p>
+			<div class="values">
+				<div class="prediction">
+					<p class="subheader">Predicted Tumor from Model</p>
+					<p class="class" id="classification-1"><%=classification%></p>
+					<p class="type" style="font-size:20px"><%=type%></p>
+					<p class="confidence" id="confidence-1"><span><%=confidence%>%</span> CONFIDENCE</p>
+
+				</div>
+				<div class="expected">
+					<p class="subheader">Actual Tumor in Image</p>
+					<p class="class"><%=expected_class%></p>
+					<p class="type" style="font-size:20px"><%=expected_type%></p>
+				</div>
 			</div>
-			<div class="expected">
-				<p class="subheader">Actual Tumor in Image</p>
-				<p class="class"><%=expected_class%></p>
-				<p class="type" style="font-size:20px"><%=expected_type%></p>
+		</div>
+		<div class="info">
+			<h2><%=type%></h2>
+			<div class="explain">
+				<h3>Description</h3>
+				<p><%-explanation%></p>
+			</div>
+			<div class="treatment">
+				<h3>Treatment Options</h3>
+				<ul>
+					<% treatments.forEach(function(tr) { %>
+						<li><%= tr %></li>
+					<% }); %>
+				</ul>
 			</div>
 		</div>
 	<div>
