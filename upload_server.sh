@@ -13,7 +13,7 @@ rsync --progress model/predict.py $SERVER_USER@$SERVER_ADDR:$SERVER_DIR/model/pr
 echo
 echo
 echo "Copying latest static folder to server..."
-#rsync --progress -r  static $SERVER_USER@$SERVER_ADDR:$SERVER_DIR --exclude img/tmp
+rsync --progress -r  static $SERVER_USER@$SERVER_ADDR:$SERVER_DIR --exclude img/tmp
 
 echo
 echo
