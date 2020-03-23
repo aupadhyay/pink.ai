@@ -57,42 +57,29 @@ app.post('/classify', function(req, res) {
 	});
 });
 
-app.post('/analyze_malignant', function(req, res) {
-	if(req.body.preset_path == null && req.files == null){
-		res.status(500).json({
-			"message": "need to upload an image from dataset or select preset image!"
-		});
-		return;
-	}
-	var preset = (req.body.preset_path);
-	var filepath = (req.body.preset_path) ? req.body.preset_path : req.files.img.tempFilePath;
-
-	exec(`python3 model/predict.py -m -f ${filepath}`, (err, stdout, stderr) => {
-		if(err){ res.status(500).json({ "message": stderr }); }
-		else {
-			var json = JSON.parse(stdout.replace(/'/g, '"'));
-			res.status(200).json(json);
-		}
-	});
-});
-
 const typeStrings = {
-	'ductal': 'Ductal Carcinoma',
-	'lobular': 'Lobular Carcinoma',
-	'mucinous': 'Mucinous Carcinoma',
-	'papillary': 'Papillary Carcinoma'
+	'benign': '',
+	'DC': 'Ductal Carcinoma',
+	'LC': 'Lobular Carcinoma',
+	'MC': 'Mucinous Carcinoma',
+	'PC': 'Papillary Carcinoma',
 };
 
 app.get('/results/:id', function(req, res) {
 	var id = req.params.id;
 	var json = JSON.parse(Buffer.from(id, 'base64').toString());
-	var numDigits = 4;
-	json.class_confidence = parseFloat((json.class_confidence * 100).toString().slice(0, 5));
-	json.type_confidence = parseFloat((json.type_confidence * 100).toString().slice(0, 5));
+	var benign_pred = json.type == "benign";
+	json.confidence = parseFloat((json.confidence * 100).toString().slice(0, 5));
+	json.classification = benign_pred ? "BENIGN" : "MALIGNANT";
 	json.type = typeStrings[json.type];
+
+	var benign_actual = json.file_path.substr(4, 1) == "b";
+	json.expected_class =  benign_actual ? "BENIGN" : "MALIGNANT"
+	json.expected_type = benign_actual ? "" : typeStrings[json.file_path.substr(20, 2)];
 	res.render('results', json);
 });
 
-app.listen(3000, () => {
-	console.log("listening on port 3000...");
+var port = 3000;
+app.listen(port, () => {
+	console.log(`listening on port ${port}...`);
 });

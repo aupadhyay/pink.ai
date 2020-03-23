@@ -28,7 +28,6 @@ a {
 }
 .confidence{
 	font-size: 22px;
-
 }
 .confidence>span{
 	color: #ffa4a4;
@@ -37,13 +36,18 @@ a {
 .imgContainer>img{
 	margin-bottom: 20px;
 }
-.imgContainer>p{
+.prediction, .expected {
+	display: inline-block;
+	vertical-align: text-top;
+	width: 30%;
+}
+.prediction>p, .expected>p{
 	font-family: "Gotham Medium", sans-serif;
 	margin-top: 0;
 	margin-bottom: 0;
 }
 .binaryContainer{
-	width: 40%;
+	width: 100%;
 	display:inline-block;
 	vertical-align: text-top;
 }
@@ -52,4 +56,13 @@ a {
 	font-size: 20px;
 	padding: 20px;
 	margin: 0px 100px;
+}
+.type {
+	font-size: 25px;
+	margin-bottom: 20px !important;
+}
+.subheader{
+	text-decoration: underline;
+	margin-bottom: 15px !important;
+	font-size: 20px;
 }

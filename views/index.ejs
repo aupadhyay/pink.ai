@@ -78,7 +78,7 @@
 		</div>
 		<select class="image-picker">
 			<% images.forEach(function(img) { %>
-				<option  data-img-src=<%=img.url%> data-img-class=<%=img.class%> value=<%=img.url%>></option>
+				<option  data-img-src=<%=img.url%> data-img-class=<%=img.class%>  value=<%=img.url%>></option>
 			<% }); %>		
 		</select>
 		<div style="position: fixed; bottom: 20px;left:0;width: 100%;">
@@ -147,8 +147,10 @@
 	</script>
 
 	<script type="text/javascript">
+		//var prefix = "/five";
+		var prefix = "";
 		function redirect(encoded){
-			window.location.href = "/results/" + encoded;
+			window.location.href = prefix + "/results/" + encoded;
 		}
 
 		function classifiedAnims(id, conf, img_path) {
@@ -166,16 +168,12 @@
 			$(".image-container").fadeOut(function(){
 				$("#loading").text("Analyzing with computer vision...");
 				setTimeout(function(){	
-					$("#loading").text("Processing with machine learning...");
+					$("#loading").text("Processing with AI...");
 				}, 1500)
 				$("#loading-anim").fadeIn();
 			});
 
 			$(".preview-image-container").fadeOut();
-			var totalData = {};
-			var classifyDone = false;
-			var classifyCall = null;
-			var analyzeCall = null;
 			if ($(".class-toggle.active").attr("id") == "upload-toggle"){
 				var form = document.getElementById("upload-form");
 				var formData = new FormData(form);
@@ -185,32 +183,10 @@
 					dataType: 'json',
 					processData: false,
 					success: function(data){
-						classifyDone = true;
-						if (data.classification == "BENIGN") {
-							analyzeCall.abort();
-							redirect(window.btoa(JSON.stringify(data)));
-						} else {
-							totalData = data;
-							classifedAnims(data.classification, data.class_confidence, data.file_path);
-						}
+						redirect(window.btoa(JSON.stringify(data)));
 					},
 				    type: 'POST',
-				    url: '/classify'
-				});
-
-				analyzeCall = $.ajax({
-					contentType: false,
-					data: formData,
-					dataType: 'json',
-					processData: false,
-					success: function(data){
-						totalData = {...totalData, ...data};
-						if(classifyDone) {
-							redirect(window.btoa(JSON.stringify(totalData)));
-						}
-					},
-				    type: 'POST',
-				    url: '/analyze_malignant'
+				    url: prefix + '/classify'
 				});
 				return;
 			}
@@ -227,31 +203,11 @@
 				data: JSON.stringify({ "preset_path": "static/" + src }),
 				dataType: 'json',
 				success: function(data){
-					classifyDone = true;
 					data.file_path = src;
-					if (data.classification == "BENIGN") {
-						analyzeCall.abort();
-						redirect(window.btoa(JSON.stringify(data)));
-					} else {
-						totalData = data;
-						classifedAnims();
-					}
+					redirect(window.btoa(JSON.stringify(data)));
 				},
 			    type: 'POST',
-			    url: '/classify'
-			});
-			analyzeCall = $.ajax({
-				contentType: 'application/json',
-				data: JSON.stringify({ "preset_path": "static/" + src }),
-				dataType: 'json',
-				success: function(data){
-					totalData = {...totalData, ...data};
-					if(classifyDone) {
-						redirect(window.btoa(JSON.stringify(totalData)));
-					}
-				},
-			    type: 'POST',
-			    url: '/analyze_malignant'
+			    url: prefix + '/classify'
 			});
 		});
 	</script>
