@@ -38,10 +38,14 @@
 		</div>
 		<div class="info">
 			<h2><%=type%></h2>
+			<% if (explanation != "") { %>
 			<div class="explain">
 				<h3>Description</h3>
 				<p><%-explanation%></p>
 			</div>
+			<% } %>
+
+			<% if (treatments.length != 0) { %>
 			<div class="treatment">
 				<h3>Treatment Options</h3>
 				<ul>
@@ -50,6 +54,7 @@
 					<% }); %>
 				</ul>
 			</div>
+			<% } %>
 		</div>
 	<div>
 </body>
