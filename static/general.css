@@ -47,7 +47,7 @@ a {
 .imgContainer{
 	display: inline-block;
 	vertical-align: text-top;
-	width: 60%;
+	width: 30%;
 	padding-top: 30px;
 	margin: auto;
 }
@@ -69,8 +69,8 @@ a {
 	margin-bottom: 0;
 }
 .binaryContainer{
-	width: 60%;
-	display:inline-block;
+	width: 100%;
+	display: block;
 	vertical-align: text-top;
 }
 .binaryContainer > p {
@@ -85,23 +85,24 @@ a {
 }
 .subheader{
 	text-decoration: underline;
+	margin: 0;
 	margin-bottom: 15px !important;
 	font-size: 20px;
 }
 .info {
-	width: 50%;
+	padding-top: 30px;
+	width: 30%;
 	margin: auto;
-}
-.explain, .treatment {
 	display: inline-block;
-	width: 40%;
-	margin: auto;
 	vertical-align: text-top;
 }
-.info>h2{
-	margin-bottom: 0;
-	text-decoration: underline;
+.explain, .treatment {
+	width: 100%;
+	margin: auto;
+	vertical-align: text-top;
+	width: 80%;
 }
+
 .explain>h3, .treatment>h3 {
 	font-family: "Gotham Medium";
 	margin-bottom: 10px;
@@ -118,6 +119,7 @@ a {
 .treatment>ul {
 	padding: 0;
 	margin: 0;
+    list-style-type: none;
 }
 .treatment>ul>li {
 	font-family: "Gotham Book";

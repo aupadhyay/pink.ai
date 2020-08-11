@@ -17,10 +17,6 @@
 		<h2 style="margin-top:0;" class="headline">Pink AI</h2>
 		<h2 class="subheadline">Accurate, Affordable, Efficient Biopsy Analysis for Breast Cancer Detection</h2>
 		<div class="binaryContainer">
-			<div class="imgContainer">
-				<h2 class="subheadline" style="margin-top: 0; margin-bottom: 20px;">Determined classification!</h2>
-				<img src=<%="../../" + file_path %> alt="" style="width:400px">
-			</div>
 			<div class="values">
 				<div class="prediction">
 					<p class="subheader">Predicted Tumor from Model</p>
@@ -35,26 +31,30 @@
 					<p class="type" style="font-size:20px"><%=expected_type%></p>
 				</div>
 			</div>
-		</div>
-		<div class="info">
-			<h2><%=type%></h2>
-			<% if (explanation != "") { %>
-			<div class="explain">
-				<h3>Description</h3>
-				<p><%-explanation%></p>
+			<div class="imgContainer">
+				<h2 class="subheader" style="margin-top: 0; margin-bottom: 20px;">Determined Classification</h2>
+				<img src=<%="../../" + file_path %> alt="" style="width:400px">
 			</div>
-			<% } %>
+			<div class="info">
+				<p class="subheader"> <%=type%></p>
+				<% if (explanation != "") { %>
+				<div class="explain">
+					<h3>Description</h3>
+					<p><%-explanation%></p>
+				</div>
+				<% } %>
 
-			<% if (treatments.length != 0) { %>
-			<div class="treatment">
-				<h3>Treatment Options</h3>
-				<ul>
-					<% treatments.forEach(function(tr) { %>
-						<li><%= tr %></li>
-					<% }); %>
-				</ul>
+				<% if (treatments.length != 0) { %>
+				<div class="treatment">
+					<h3>Treatment Options</h3>
+					<ul>
+						<% treatments.forEach(function(tr) { %>
+							<li><%= tr %></li>
+						<% }); %>
+					</ul>
+				</div>
+				<% } %>
 			</div>
-			<% } %>
 		</div>
 	<div>
 </body>
